@@ -36,15 +36,19 @@
   --radius-sm: 8px;
   --ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --read: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --fs: 1.0625rem;          /* article reading size, scaled by the Display menu */
-  --measure: 46rem;
-  --page: 1320px;
+  --fs: 1.0625rem;          /* article reading size (scales with the root font size) */
+  --measure: 46rem;         /* comfortable reading column */
+  --page: 1180px;           /* comfortable page width */
+  --narrow: 820px;          /* search and error pages */
   --brand-mark-ink: #ffffff;
   color-scheme: light;
 }
-:root[data-size="small"] { --fs: 0.9688rem; }
-:root[data-size="large"] { --fs: 1.25rem; }
-:root[data-width="wide"] { --measure: 72rem; --page: 1680px; }
+/* Display menu. Text size scales the root, so every rem-based size (headings, tables,
+   facts, UI) grows or shrinks together; page width lifts the content caps on every page. */
+html { font-size: 100%; }
+:root[data-size="small"] { font-size: 87.5%; }
+:root[data-size="large"] { font-size: 118.75%; }
+:root[data-width="wide"] { --measure: 100%; --page: 100%; --narrow: 1180px; }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -490,7 +494,7 @@ sup.cite--note a { font-style: italic; border: 1px dashed var(--border-strong); 
 .home .attribution { max-width: none; }
 
 /* ---------- Search page ---------- */
-.search-page { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.25rem 0; }
+.search-page { max-width: var(--narrow); margin: 0 auto; padding: 2.5rem 1.25rem 0; }
 .search-page__head h1 { font: 700 clamp(2rem, 4vw, 2.6rem)/1.1 var(--read); margin-bottom: 1.2rem; }
 .search-page__head .search__label { font-size: .9375rem; color: var(--text-2); }
 .search-status { color: var(--text-2); margin: 1.5rem 0 1rem; font-size: .9375rem; }
@@ -517,7 +521,7 @@ sup.cite--note a { font-style: italic; border: 1px dashed var(--border-strong); 
 .search-notice--error a, .search-notice--error a:visited, .search-notice--error button { color: var(--badge-b-ink); }
 
 /* ---------- 404 ---------- */
-.notfound { max-width: 720px; margin: 0 auto; padding: 4rem 1.25rem 1rem; }
+.notfound { max-width: var(--narrow); margin: 0 auto; padding: 4rem 1.25rem 1rem; }
 .notfound h1 { font: 700 clamp(2rem, 5vw, 3rem)/1.1 var(--read); }
 .notfound .eyebrow { color: var(--muted); }
 .notfound .lede { color: var(--text-2); font-size: 1.125rem; margin-bottom: 1.5rem; }

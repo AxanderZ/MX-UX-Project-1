@@ -63,7 +63,7 @@ All WAVE findings:
 
 Also included: a skip link, landmarks, a sticky table of contents, visible focus rings, 24px minimum target size for citation markers (WCAG 2.2), an accessible combobox for search suggestions, sortable tables with `aria-sort` and a live announcement, and support for reduced motion and dark mode.
 
-**WAVE results on the live site** (September 24, 2026):
+**WAVE results on the live site** (measured September 24, 2026, before the Help button and link modes were added. The automated check below was re-run afterward on every page, including `help.html`):
 
 | Page | AIM score | Errors | Contrast errors | Alerts |
 |---|---|---|---|---|

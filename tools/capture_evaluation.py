@@ -176,15 +176,15 @@ def h6(b):
 @register("h7")
 def h7(b):
     pg = open_page(b, WP + "Golden_State_Warriors")
-    pg.evaluate("[...document.querySelectorAll('#mw-content-text a')].find(a => a.textContent.trim() === 'Stephen Curry').scrollIntoView({block: 'center'})")
-    pg.wait_for_timeout(600)
+    # The Stephen Curry link is in the first screen, so the search box stays visible too.
     pg.locator("#mw-content-text a", has_text="Stephen Curry").first.hover()
     pg.wait_for_timeout(2600)
     annotate(pg, [
-        {"selector": ".mwe-popups", "label": "Page previews: hovering the related article (Stephen Curry) shows a summary without leaving the page."},
-        {"selector": "#vector-appearance-pinned-container", "pad": 2, "label": "Appearance settings for text size, page width and dark mode. Access keys (e.g. Alt+Shift+F for search) serve experts."},
-    ], "H7 Flexibility and efficiency of use: UPHOLDS. Accelerators for experienced readers, invisible to novices.", "uphold",
-        {"x": 20, "y": 520, "w": 250})
+        {"selector": ".mwe-popups", "label": "Shortcut 1: hovering a link (here the related article, Stephen Curry) previews it without leaving the page. Beginners can ignore it."},
+        {"selector": "#p-search input[type=search], #searchInput", "label": "Shortcut 2: an access key jumps straight to search (Alt+Shift+F, or Ctrl+Option+F on a Mac). It appears only in the tooltip, so it adds no clutter."},
+        {"selector": "#vector-appearance-pinned-container", "pad": 2, "label": "Minor clutter: the Appearance settings panel is open by default on wide screens, even for readers who never change it."},
+    ], "H7 Flexibility and efficiency of use: UPHOLDS. Shortcuts for experienced readers that beginners never have to see.", "uphold",
+        {"x": 20, "y": 425, "w": 250})
     shot(pg, "h7-flexibility-efficiency")
 
 

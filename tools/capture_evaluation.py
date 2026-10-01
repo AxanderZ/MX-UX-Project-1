@@ -17,7 +17,7 @@ from playwright.sync_api import sync_playwright
 OUT = Path(__file__).resolve().parent.parent / "docs" / "evaluation"
 OUT.mkdir(parents=True, exist_ok=True)
 WP = "https://en.wikipedia.org/wiki/"
-SITE = "https://axanderz.github.io/my-awesome-site/"
+SITE = "https://axanderz.github.io/MX-UX-Project-1/"
 
 # Draws markers in viewport (fixed) coordinates, so it works at any scroll position.
 ANNOTATE = r"""

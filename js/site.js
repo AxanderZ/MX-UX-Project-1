@@ -30,19 +30,35 @@
     const toggle = $('.display__toggle');
     const panel = $('#display-panel');
     if (!toggle || !panel) return;
+    const defaults = { theme: 'auto', size: 'standard', width: 'standard', links: 'quiet' };
+    const focusBtn = $('.focus-toggle');
     let settings = {};
     try { settings = JSON.parse(localStorage.getItem('display') || '{}'); } catch (e) { /* storage blocked */ }
 
+    // One place applies a setting, so the Display menu and the article's quick toggle stay in sync.
+    const apply = (name, value) => {
+      settings[name] = value;
+      if (value === defaults[name]) delete root.dataset[name];
+      else root.dataset[name] = value;
+      $$(`input[name="${name}"]`, panel).forEach((i) => { i.checked = i.value === value; });
+      if (name === 'links' && focusBtn) focusBtn.setAttribute('aria-pressed', String(value === 'hide'));
+      try { localStorage.setItem('display', JSON.stringify(settings)); } catch (e) { /* ignore */ }
+    };
+
     $$('input[type="radio"]', panel).forEach((input) => {
       if (settings[input.name]) input.checked = input.value === settings[input.name];
-      input.addEventListener('change', () => {
-        settings[input.name] = input.value;
-        const defaults = { theme: 'auto', size: 'standard', width: 'standard' };
-        if (input.value === defaults[input.name]) delete root.dataset[input.name];
-        else root.dataset[input.name] = input.value;
-        try { localStorage.setItem('display', JSON.stringify(settings)); } catch (e) { /* ignore */ }
-      });
+      input.addEventListener('change', () => apply(input.name, input.value));
     });
+
+    if (focusBtn) {
+      let previous = settings.links && settings.links !== 'hide' ? settings.links : 'quiet';
+      focusBtn.setAttribute('aria-pressed', String(settings.links === 'hide'));
+      focusBtn.addEventListener('click', () => {
+        const hiding = focusBtn.getAttribute('aria-pressed') !== 'true';
+        if (hiding) previous = settings.links && settings.links !== 'hide' ? settings.links : 'quiet';
+        apply('links', hiding ? 'hide' : previous);
+      });
+    }
 
     const setOpen = (open) => {
       panel.hidden = !open;
@@ -54,6 +70,31 @@
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !panel.hidden) { setOpen(false); toggle.focus(); }
+    });
+  })();
+
+  /* ------------------------------------------------------------------ */
+  /* Help page: filter topics as you type                                */
+  /* ------------------------------------------------------------------ */
+  (function helpFilter() {
+    const input = $('#help-q');
+    if (!input) return;
+    const topics = $$('.help-topic:not(.help-topic--more)');
+    const cards = $$('.help-card');
+    const count = $('#help-count');
+    const empty = $('#help-empty');
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      topics.forEach((t) => {
+        const match = !q || t.textContent.toLowerCase().includes(q);
+        t.hidden = !match;
+        const card = cards.find((c) => c.getAttribute('href') === '#' + t.id);
+        if (card) card.parentElement.hidden = !match;
+        if (match) shown += 1;
+      });
+      empty.hidden = shown > 0;
+      count.textContent = q ? `${shown} of ${topics.length} topics match` : '';
     });
   })();
 

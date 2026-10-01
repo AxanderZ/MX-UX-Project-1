@@ -9,7 +9,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE = "http://localhost:8765/"
-PAGES = ["index.html", "search.html", "search.html?q=golden+state+warirors", "404.html",
+PAGES = ["index.html", "help.html", "search.html", "search.html?q=golden+state+warirors", "404.html",
          "wiki/Golden_State_Warriors.html", "wiki/Stephen_Curry.html"]
 LINT = (Path(__file__).parent / "wave_lint.js").read_text()
 import urllib.request, ssl
@@ -27,8 +27,8 @@ with sync_playwright() as p:
         ctx = browser.new_context(viewport={"width": 1400, "height": 900}, color_scheme=theme)
         for path in PAGES:
             page = ctx.new_page()
-            # 404.html uses GitHub Pages' /my-awesome-site/ prefix; map it to the local server.
-            page.route("**/my-awesome-site/**", lambda route: route.continue_(url=route.request.url.replace("/my-awesome-site/", "/")))
+            # 404.html uses GitHub Pages' /MX-UX-Project-1/ prefix; map it to the local server.
+            page.route("**/MX-UX-Project-1/**", lambda route: route.continue_(url=route.request.url.replace("/MX-UX-Project-1/", "/")))
             page.goto(BASE + path, wait_until="networkidle")
             page.wait_for_timeout(1500 if "q=" in path else 300)
             page.add_script_tag(content=AXE)

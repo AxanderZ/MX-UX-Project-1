@@ -31,11 +31,11 @@ ROOT = Path(__file__).resolve().parent.parent
 API = "https://en.wikipedia.org/w/api.php"
 WIKI = "https://en.wikipedia.org/wiki/"
 SESSION = requests.Session()
-SESSION.headers["User-Agent"] = "EncyclopediaRedesign/1.0 (UX class project; https://github.com/AxanderZ/my-awesome-site)"
+SESSION.headers["User-Agent"] = "EncyclopediaRedesign/1.0 (UX class project; https://github.com/AxanderZ/MX-UX-Project-1)"
 
 SITE_NAME = "Encyclopedia"
-REPO_URL = "https://github.com/AxanderZ/my-awesome-site"
-BASE = "/my-awesome-site/"   # GitHub Pages project path, used only by 404.html (served at any depth)
+REPO_URL = "https://github.com/AxanderZ/MX-UX-Project-1"
+BASE = "/MX-UX-Project-1/"   # GitHub Pages project path, used only by 404.html (served at any depth)
 
 # ---------------------------------------------------------------------------
 # Articles rebuilt locally. Links to these titles stay inside the redesign.
@@ -885,6 +885,8 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap">')
 
 ICON_SEARCH = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+ICON_HELP = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.3 9.4a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2 1-1.2 1.8v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.25" fill="currentColor"/></svg>'
+ICON_FOCUS = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 10h16M4 14h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>'
 ICON_DISPLAY = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h10M4 17h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>'
 LOGO = ('<svg class="brand__mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false">'
         '<rect width="40" height="40" rx="11" fill="currentColor"/>'
@@ -919,13 +921,13 @@ def page(*, title, description, body, prefix, active="", header_search=True, ext
 <meta name="description" content="{esc(description)}">
 <meta name="color-scheme" content="light dark">
 {FONTS}
-<link rel="stylesheet" href="{prefix}css/site.css">
+<link rel="stylesheet" href="{prefix}css/site.css?v=3">
 <link rel="icon" href="{prefix}favicon.svg" type="image/svg+xml">
 <script>
-try{{var s=JSON.parse(localStorage.getItem("display")||"{{}}");var d=document.documentElement;if(s.theme&&s.theme!=="auto")d.dataset.theme=s.theme;if(s.size&&s.size!=="standard")d.dataset.size=s.size;if(s.width==="wide")d.dataset.width="wide";}}catch(e){{}}
+try{{var s=JSON.parse(localStorage.getItem("display")||"{{}}");var d=document.documentElement;if(s.theme&&s.theme!=="auto")d.dataset.theme=s.theme;if(s.size&&s.size!=="standard")d.dataset.size=s.size;if(s.width==="wide")d.dataset.width="wide";if(s.links&&s.links!=="quiet")d.dataset.links=s.links;}}catch(e){{}}
 document.documentElement.classList.add("js");
 </script>
-<script src="{prefix}js/site.js" defer></script>
+<script src="{prefix}js/site.js?v=2" defer></script>
 {extra_head}
 </head>
 <body>
@@ -937,6 +939,7 @@ document.documentElement.classList.add("js");
     <nav class="site-nav" aria-label="Site">
       <ul>{nav_html}</ul>
     </nav>
+    <a class="help-btn" href="{prefix}help.html"{' aria-current="page"' if active == "help" else ""}>{ICON_HELP}<span>Help</span></a>
     <div class="display">
       <button class="display__toggle" type="button" aria-expanded="false" aria-controls="display-panel">{ICON_DISPLAY}<span>Display</span></button>
       <div class="display__panel" id="display-panel" hidden>
@@ -954,6 +957,11 @@ document.documentElement.classList.add("js");
           <label><input type="radio" name="theme" value="light"> Light</label>
           <label><input type="radio" name="theme" value="dark"> Dark</label>
         </fieldset>
+        <fieldset><legend>Links and citations</legend>
+          <label><input type="radio" name="links" value="show"> Highlighted</label>
+          <label><input type="radio" name="links" value="quiet" checked> Quiet</label>
+          <label><input type="radio" name="links" value="hide"> Hidden while reading</label>
+        </fieldset>
       </div>
     </div>
   </div>
@@ -963,6 +971,7 @@ document.documentElement.classList.add("js");
   <div class="site-footer__inner">
     <div class="site-footer__brand">{LOGO}<span>{SITE_NAME} Redesign</span></div>
     <p>Article text and data come from <a href="https://en.wikipedia.org/">Wikipedia</a> and its contributors under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Images are credited on each page.</p>
+    <p><a href="{prefix}help.html">Help and how-to guide</a> · <a href="{prefix}help.html#keyboard">Accessibility</a> · <a href="{prefix}help.html#corrections">Report a problem</a></p>
     <p>A student UX project, {year}. Not affiliated with Wikipedia or the Wikimedia Foundation. <a href="{REPO_URL}">Source code on GitHub</a>.</p>
   </div>
 </footer>
@@ -1183,6 +1192,10 @@ def build_article(slug):
       <p class="lede">{esc(shortdesc[:1].upper() + shortdesc[1:])}</p>
       <p class="article-meta"><span>Last edited <time datetime="{ts.date().isoformat()}">{ts.strftime("%B %-d, %Y")}</time></span><span>{total_words:,} words</span><span>About {max(1, round(total_words / 230))} minutes to read in full</span></p>
       {actions}
+      <div class="reading-tools">
+        <button class="focus-toggle" type="button" aria-pressed="false">{ICON_FOCUS}<span>Hide links and citations</span></button>
+        <a class="reading-tools__help" href="{prefix}help.html#reading">{ICON_HELP}<span>How to read this page</span></a>
+      </div>
       {protect}
     </div>
   </header>
@@ -1415,6 +1428,7 @@ def build_search():
         <li>Put words in quotes to match an exact phrase, for example <a href="search.html?q=%22Run+TMC%22">“Run TMC”</a>.</li>
         <li>Articles marked <span class="badge badge--local">Redesigned</span> open in this site's reading layout. Others open on Wikipedia.</li>
       </ul>
+      <p><a href="help.html#searching">More about searching in the Help guide</a></p>
     </section>
   </div>
 </main>'''
@@ -1438,6 +1452,116 @@ def build_404():
     print("  wrote 404.html")
 
 
+HELP_TOPICS = [
+    ("searching", "Finding an article", "search", """
+      <p>Type in the search box at the top of any page. Suggestions appear as you type.</p>
+      <ol>
+        <li>Use the <kbd>↑</kbd> and <kbd>↓</kbd> arrow keys to move through suggestions, and <kbd>Enter</kbd> to open one.</li>
+        <li>Press <kbd>Enter</kbd> without choosing a suggestion to see a full list of results.</li>
+        <li>If you misspell a word, the results page says <em>Showing results for …</em> and lets you search your original spelling instead.</li>
+        <li>Articles marked <span class="badge badge--local">Redesigned</span> open in this site's reading layout. Other articles open on Wikipedia.</li>
+      </ol>
+      <p><a href="search.html?q=golden+state+warriors">Try it: search for “golden state warriors”</a></p>"""),
+    ("reading", "Reading an article quickly", "read", """
+      <p>Articles are long, so they open with the most-asked facts first. You never have to read the whole page to find an answer.</p>
+      <dl class="help-terms">
+        <div><dt>At a glance</dt><dd>Key numbers and a short fact list at the top of the article.</dd></div>
+        <div><dt>History in brief</dt><dd>One or two sentences per era, each with a link to the full text.</dd></div>
+        <div><dt>Collapsed sections</dt><dd>Each subsection is closed until you open it, and shows how long it takes to read. <strong>Expand all</strong> opens a whole section at once.</dd></div>
+        <div><dt>Contents</dt><dd>The list on the left (or at the top on a phone) highlights where you are. The thin gold bar at the very top shows how far you've read.</dd></div>
+      </dl>"""),
+    ("links", "Links, citations and sources", "link", """
+      <p>Underlined words are links to other articles. Small numbered boxes after a sentence are <strong>citations</strong>: they show where that fact came from.</p>
+      <ul>
+        <li>Point at or tab to a citation to preview its source without leaving your place.</li>
+        <li>A box with an italic letter, such as <em>a</em>, is a <strong>note</strong> with extra explanation, not a source.</li>
+        <li>All sources are listed in full in the <strong>Sources</strong> section near the end of each article.</li>
+      </ul>
+      <p><strong>Too distracting?</strong> Press <strong>Hide links and citations</strong> under the article title. Links then read like normal text, and citation numbers are hidden. Press it again to bring them back. You can also choose this under <strong>Display</strong>, <strong>Links and citations</strong>.</p>"""),
+    ("display", "Changing how pages look", "display", """
+      <p>Open <strong>Display</strong> in the top-right corner of any page. Every option can be changed back the same way, and your choice is remembered on this device.</p>
+      <ul>
+        <li><strong>Text size:</strong> Small, Standard or Large.</li>
+        <li><strong>Page width:</strong> Comfortable (shorter lines, easier to read) or Wide.</li>
+        <li><strong>Color theme:</strong> match your device, or always light or dark.</li>
+        <li><strong>Links and citations:</strong> Highlighted, Quiet (the default) or Hidden while reading.</li>
+      </ul>"""),
+    ("keyboard", "Keyboard and screen reader use", "keyboard", """
+      <ul>
+        <li>Press <kbd>Tab</kbd> on any page to reveal <strong>Skip to main content</strong>. It jumps past the header.</li>
+        <li>Every button and link can be reached with <kbd>Tab</kbd> and used with <kbd>Enter</kbd> or <kbd>Space</kbd>. The item in focus always has an orange outline.</li>
+        <li><kbd>Esc</kbd> closes the Display menu and search suggestions.</li>
+        <li>Pages use real headings and landmarks, so screen reader users can jump between sections. Every image has a text description.</li>
+        <li>Text meets WCAG AA contrast in both the light and dark themes.</li>
+      </ul>"""),
+    ("corrections", "Something wrong? Suggesting a correction", "flag", """
+      <p>Article text comes from Wikipedia, so corrections are made there. The buttons under each article title use plain language:</p>
+      <dl class="help-terms">
+        <div><dt>Suggest a correction</dt><dd>Opens a form on Wikipedia where you can describe the mistake. An editor will review it.</dd></div>
+        <div><dt>Discuss this article</dt><dd>Wikipedia's discussion page for the article (called “Talk” on Wikipedia).</dd></div>
+        <div><dt>See who edited it</dt><dd>The full list of changes and who made them (called “View history” on Wikipedia).</dd></div>
+        <div><dt>Lock notice</dt><dd>Some popular articles can only be edited directly by experienced editors, to prevent vandalism. Anyone can still suggest a correction.</dd></div>
+      </dl>"""),
+    ("glossary", "Wikipedia words, explained", "book", """
+      <p>If you've used Wikipedia before, here is what its labels are called on this site.</p>
+      <div class="table-wrap"><table class="data-table">
+        <caption>Wikipedia labels and their names on this site</caption>
+        <thead><tr><th scope="col">On Wikipedia</th><th scope="col">On this site</th><th scope="col">What it is</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Talk</th><td>Discuss this article</td><td>Where editors discuss changes</td></tr>
+          <tr><th scope="row">View history</th><td>See who edited it</td><td>Every past version of the article</td></tr>
+          <tr><th scope="row">View source</th><td>(not shown)</td><td>The article's editing code, not its sources</td></tr>
+          <tr><th scope="row">References</th><td>Sources</td><td>Where each fact came from</td></tr>
+          <tr><th scope="row">External links</th><td>Elsewhere on the web</td><td>Official and related websites</td></tr>
+          <tr><th scope="row">v · t · e</th><td>Related topics</td><td>Groups of related articles</td></tr>
+        </tbody>
+      </table></div>"""),
+]
+
+HELP_ICONS = {
+    "search": '<circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    "read": '<path d="M4 5h6a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+    "link": '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    "display": '<path d="M4 7h16M4 12h10M4 17h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>',
+    "keyboard": '<rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 10h1M11 10h1M15 10h2M7 14h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    "flag": '<path d="M5 21V4h11l-1.5 4L16 12H5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+    "book": '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h11" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
+}
+
+
+def build_help():
+    icon = lambda k: f'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{HELP_ICONS[k]}</svg>'
+    cards = "".join(f'<li><a class="help-card" href="#{tid}">{icon(ic)}<span>{esc(t)}</span></a></li>' for tid, t, ic, _ in HELP_TOPICS)
+    topics = "".join(f'''<section class="help-topic" id="{tid}" aria-labelledby="{tid}-title">
+    <h2 id="{tid}-title">{icon(ic)}<span>{esc(t)}</span></h2>{body}
+    <p class="help-topic__top"><a href="#main">Back to all help topics</a></p>
+  </section>''' for tid, t, ic, body in HELP_TOPICS)
+    body = f'''<main id="main" tabindex="-1" class="help-page">
+  <div class="help-page__head">
+    <p class="eyebrow">Help</p>
+    <h1 id="help-title">How can we help?</h1>
+    <p class="lede">Short answers about finding, reading and checking articles on this site. You can reach this page from the <strong>Help</strong> button at the top of every page.</p>
+    <form class="help-filter" role="search" aria-label="Help topics" onsubmit="return false">
+      <label for="help-q">Find a help topic</label>
+      <input id="help-q" type="search" placeholder="For example: citations, dark mode, keyboard" autocomplete="off" aria-describedby="help-count">
+      <p id="help-count" class="meta" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+  <nav class="help-cards" aria-label="Help topics"><ul>{cards}</ul></nav>
+  <div class="help-topics">
+  {topics}
+  <p class="help-empty" id="help-empty" hidden>No help topics match. Try a shorter word, or <a href="https://en.wikipedia.org/wiki/Help:Contents">browse Wikipedia's own help pages</a>.</p>
+  <section class="help-topic help-topic--more" aria-labelledby="more-title">
+    <h2 id="more-title">Still need help?</h2>
+    <p>Ask a person at <a href="https://en.wikipedia.org/wiki/Wikipedia:Help_desk">Wikipedia's Help desk</a>, or read <a href="https://en.wikipedia.org/wiki/Help:Contents">Wikipedia's full help pages</a>. Questions about this redesign can go to the <a href="{REPO_URL}/issues">project's issue tracker</a>.</p>
+  </section>
+  </div>
+</main>'''
+    (ROOT / "help.html").write_text(page(title=f"Help | {SITE_NAME} Redesign", description="How to find, read and check articles on this site.",
+                                         body=body, prefix="", active="help"))
+    print("  wrote help.html")
+
+
 ARTICLES_TITLES = {}
 
 
@@ -1449,6 +1573,7 @@ def main():
         built.append(r)
     build_home(built)
     build_search()
+    build_help()
     build_404()
     print("done")
 

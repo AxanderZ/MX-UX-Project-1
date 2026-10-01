@@ -7,13 +7,13 @@
 <meta content="National Basketball Association team in San Francisco, California" name="description"/>
 <meta content="light dark" name="color-scheme"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet"/>
-<link href="../css/site.css" rel="stylesheet"/>
+<link href="../css/site.css?v=3" rel="stylesheet"/>
 <link href="../favicon.svg" rel="icon" type="image/svg+xml"/>
 <script>
-try{var s=JSON.parse(localStorage.getItem("display")||"{}");var d=document.documentElement;if(s.theme&&s.theme!=="auto")d.dataset.theme=s.theme;if(s.size&&s.size!=="standard")d.dataset.size=s.size;if(s.width==="wide")d.dataset.width="wide";}catch(e){}
+try{var s=JSON.parse(localStorage.getItem("display")||"{}");var d=document.documentElement;if(s.theme&&s.theme!=="auto")d.dataset.theme=s.theme;if(s.size&&s.size!=="standard")d.dataset.size=s.size;if(s.width==="wide")d.dataset.width="wide";if(s.links&&s.links!=="quiet")d.dataset.links=s.links;}catch(e){}
 document.documentElement.classList.add("js");
 </script>
-<script defer="" src="../js/site.js"></script>
+<script defer="" src="../js/site.js?v=2"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -31,8 +31,9 @@ document.documentElement.classList.add("js");
 <p aria-live="polite" class="vh" id="site-q-status" role="status"></p>
 </form>
 <nav aria-label="Site" class="site-nav">
-<ul><li><a href="../search.html">Search</a></li><li><a href="https://github.com/AxanderZ/my-awesome-site#readme">About this redesign</a></li></ul>
+<ul><li><a href="../search.html">Search</a></li><li><a href="https://github.com/AxanderZ/MX-UX-Project-1#readme">About this redesign</a></li></ul>
 </nav>
+<a class="help-btn" href="../help.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.3 9.4a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2 1-1.2 1.8v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.25" fill="currentColor"/></svg><span>Help</span></a>
 <div class="display">
 <button aria-controls="display-panel" aria-expanded="false" class="display__toggle" type="button"><svg aria-hidden="true" class="icon" focusable="false" viewbox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path></svg><span>Display</span></button>
 <div class="display__panel" hidden="" id="display-panel">
@@ -49,6 +50,11 @@ document.documentElement.classList.add("js");
 <label><input checked="" name="theme" type="radio" value="auto"/> Match device</label>
 <label><input name="theme" type="radio" value="light"/> Light</label>
 <label><input name="theme" type="radio" value="dark"/> Dark</label>
+</fieldset>
+<fieldset><legend>Links and citations</legend>
+<label><input name="links" type="radio" value="show"/> Highlighted</label>
+<label><input checked="" name="links" type="radio" value="quiet"/> Quiet</label>
+<label><input name="links" type="radio" value="hide"/> Hidden while reading</label>
 </fieldset>
 </div>
 </div>
@@ -69,6 +75,10 @@ document.documentElement.classList.add("js");
 <li><a href="https://en.wikipedia.org/w/index.php?title=Talk:Golden_State_Warriors&amp;action=edit&amp;section=new">Suggest a correction</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Golden_State_Warriors">Read on Wikipedia</a></li>
 </ul></nav>
+<div class="reading-tools">
+<button aria-pressed="false" class="focus-toggle" type="button"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 10h16M4 14h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>Hide links and citations</span></button>
+<a class="reading-tools__help" href="../help.html#reading"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9.3 9.4a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2 1-1.2 1.8v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.25" fill="currentColor"/></svg><span>How to read this page</span></a>
+</div>
 <p class="protect-note"><svg aria-hidden="true" class="icon" focusable="false" viewbox="0 0 16 16"><path d="M4 7V5a4 4 0 1 1 8 0v2h1v8H3V7zm2 0h4V5a2 2 0 1 0-4 0z" fill="currentColor"></path></svg><span>Only experienced, registered editors can change this article directly, to guard against vandalism. Anyone can suggest a correction.</span></p>
 </div>
 </header>
@@ -1653,7 +1663,8 @@ Transclusion expansion time report (%,ms,calls,template)
 <div class="site-footer__inner">
 <div class="site-footer__brand"><svg aria-hidden="true" class="brand__mark" focusable="false" viewbox="0 0 40 40"><rect fill="currentColor" height="40" rx="11" width="40"></rect><path d="M11 12h18M11 20h18M11 28h11" stroke="var(--brand-mark-ink)" stroke-linecap="round" stroke-width="3"></path></svg><span>Encyclopedia Redesign</span></div>
 <p>Article text and data come from <a href="https://en.wikipedia.org/">Wikipedia</a> and its contributors under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Images are credited on each page.</p>
-<p>A student UX project, 2026. Not affiliated with Wikipedia or the Wikimedia Foundation. <a href="https://github.com/AxanderZ/my-awesome-site">Source code on GitHub</a>.</p>
+<p><a href="../help.html">Help and how-to guide</a> · <a href="../help.html#keyboard">Accessibility</a> · <a href="../help.html#corrections">Report a problem</a></p>
+<p>A student UX project, 2026. Not affiliated with Wikipedia or the Wikimedia Foundation. <a href="https://github.com/AxanderZ/MX-UX-Project-1">Source code on GitHub</a>.</p>
 </div>
 </footer>
 </body>

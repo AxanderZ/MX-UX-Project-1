@@ -2,40 +2,53 @@
 
 A UX class project that rebuilds Wikipedia's core reading experience (the homepage, the search flow, and a full article followed through to a related article), fixing its most severe usability problems and its WAVE accessibility errors.
 
-**Live site:** https://axanderz.github.io/my-awesome-site/
+**Live site:** https://axanderz.github.io/MX-UX-Project-1/
 
 ## The task this redesign supports
 
 > *"Find out how many championships the Golden State Warriors have won and who was Finals MVP in 2022, then learn how Stephen Curry's career began."*
 
-Path: **Homepage** → **search** "golden state warriors" (autocomplete or results page) → **[Golden State Warriors](https://axanderz.github.io/my-awesome-site/wiki/Golden_State_Warriors.html)** → related-article link → **[Stephen Curry](https://axanderz.github.io/my-awesome-site/wiki/Stephen_Curry.html)**.
+Path: **Homepage** → **search** "golden state warriors" (autocomplete or results page) → **[Golden State Warriors](https://axanderz.github.io/MX-UX-Project-1/wiki/Golden_State_Warriors.html)** → related-article link → **[Stephen Curry](https://axanderz.github.io/MX-UX-Project-1/wiki/Stephen_Curry.html)**.
 
 | Page | File |
 |---|---|
 | Homepage | `index.html` |
 | Search results (live Wikipedia search) | `search.html` |
+| Help and how-to guide | `help.html` |
 | Article | `wiki/Golden_State_Warriors.html` (all 17,457 words of the original) |
 | Related article | `wiki/Stephen_Curry.html` (all 29,420 words of the original) |
 | Error page | `404.html` |
 
 ## Heuristic violations resolved
 
+These are the three violations from my heuristic evaluation, in order of severity.
+
 | Heuristic (severity) | Problem on Wikipedia | Change in the redesign |
 |---|---|---|
-| **#8 Aesthetic and minimalist design (3)** | 17,500 words, about 40 screens, 2,795 links. Key facts are buried. | **Nothing is removed; it's reorganized.** "At a glance" stat cards and a fact list come first. "History in brief" gives a two-sentence summary per era, with a link to the full text. Every subsection is a collapsed panel showing its reading time, with "Expand all" per section. The reading column is capped at a comfortable width (46rem). Links use a quiet underline instead of loud blue, citations are small chips, and the 217 sources and the navigation boxes sit in collapsed panels. |
-| **#6 Recognition rather than recall (2)** | Roster codes "(TW)" and a red ✚ are explained only in a separate legend. "Pos.", "DOB" and stat abbreviations are unexplained. | The roster legend sits **above** the table, and statuses are text badges ("Two-way contract", "Injured") next to each name. Columns are spelled out ("Jersey number", "Born"). Every table using abbreviations (GP, MPG, FG%…) gets a key above it. Citation previews show the source on hover or focus, so readers don't have to jump away and remember their place. |
-| **#2 Match between system and the real world (2)** | "Talk", "View source", "View history", "v · t · e", unexplained padlock, mixed [a]/[1] markers. | Plain-language actions: **Discuss this article**, **See who edited it**, **Suggest a correction**. Protection is explained in a sentence. Navboxes become "Related topics" with no "v · t · e". "References" is renamed **Sources**, and "External links" is renamed **Elsewhere on the web**. Notes and sources are visually distinct and announced as "Note a" / "Source 12". |
+| **#10 Help and documentation (3)** | Help is hidden inside the ☰ "Main menu" button, which has low contrast against the page. Once the menu is open, "Help" is in the same color as every other item, so it's hard to spot. | **A solid gold "Help" button sits in the header of every page** (`.help-btn`). It has an icon and a text label, and dark ink on gold measures 9.6:1. It is never folded into a menu, even on phones, where the other nav links are hidden. It opens a new **Help page** (`help.html`) with plain-language answers on finding an article, reading quickly, citations, display settings, keyboard and screen reader use, and suggesting a correction. It also includes a glossary of Wikipedia jargon and a "Find a help topic" filter. Help is also offered in context: **"How to read this page"** under every article title, **"More about searching"** on the search page, and Help, Accessibility and Report-a-problem links in every footer. |
+| **#8 Aesthetic and minimalist design (3)** | Too many in-text links and citation marks compete for attention and pull readers away from their goal. Key facts are buried in 17,500 words. | **Links and citations are quiet by default.** In-text links use the text color with a thin gray underline, so they're still recognizable but don't shout. Citation numbers are small and gray. **A "Hide links and citations" button under each article title** removes them entirely for distraction-free reading. Press it again to bring them back, and the same choice appears under Display, Links and citations (Highlighted / Quiet / Hidden). Navigation links such as "History in brief", "Main article" and buttons are never quietened. Content is reorganized too: "At a glance" facts come first, "History in brief" gives two sentences per era, and every subsection is collapsed with its reading time. |
+| **#2 Match between system and the real world (2)** | "Talk" (an editors' discussion page) and "View source" (wiki markup, easy to confuse with the article's sources) mean little to casual fans. "View history", "v · t · e" and an unexplained padlock add to the confusion. | Plain-language actions: **Discuss this article**, **See who edited it**, **Suggest a correction**, **Read on Wikipedia**. "View source" is removed. The padlock is explained in a sentence. Navboxes become "Related topics" with no "v · t · e". "References" is renamed **Sources**, and "External links" is renamed **Elsewhere on the web**. The help page's glossary maps every Wikipedia label to its new name. |
 
 The redesign keeps what Wikipedia already does well:
 - **H1:** a contents list that highlights the current section, plus a reading progress bar.
-- **H3 and H7:** reversible display settings for text size, width and theme.
+- **H3 and H7:** reversible display settings for text size, width, theme and links.
 - **H4:** a conventional header.
 - **H5:** search suggestions.
+- **H6:** roster legends and table keys sit above the tables.
 - **H9:** "Showing results for … / Search instead for …" spelling correction, plus a clear error with a retry button if search is unreachable.
 
 ## Accessibility issues resolved
 
 Baseline WAVE report for the original article: **AIM score 3.7**, with 25 errors, 93 contrast errors and 1,147 alerts.
+
+The two issues I tested by hand, and how each is fixed:
+
+| Finding in my evaluation | Who it affects | Fix |
+|---|---|---|
+| **Contrast:** the "1946" link in the team navigation box at the bottom is blue on gold, which fails. | People with color blindness or low vision | Team-color backgrounds are stripped from navigation boxes, now "Related topics". Every text color pair measures at least 6.2:1 in both light and dark themes, including the gold Help button at 9.6:1. |
+| **Alt text:** the photo of Joe Fulks in the History section has no alt attribute, and the image is a link. | Blind and low-vision readers using screen readers | The photo now has the alt text "Professional basketball player Joe Fulks". The file-page link around it is removed, so there's no empty link. All 23 images WAVE flagged get the same fix. |
+
+All WAVE findings:
 
 | WAVE finding on Wikipedia | Fix |
 |---|---|
@@ -55,10 +68,10 @@ Also included: a skip link, landmarks, a sticky table of contents, visible focus
 | Page | AIM score | Errors | Contrast errors | Alerts |
 |---|---|---|---|---|
 | Original Wikipedia article | 3.7 | 25 | 93 | 1,147 |
-| [Golden State Warriors](https://wave.webaim.org/report#/https://axanderz.github.io/my-awesome-site/wiki/Golden_State_Warriors.html) | **10** | 0 | 0 | 2 |
-| [Stephen Curry](https://wave.webaim.org/report#/https://axanderz.github.io/my-awesome-site/wiki/Stephen_Curry.html) | **10** | 0 | 0 | 3 |
-| [Homepage](https://wave.webaim.org/report#/https://axanderz.github.io/my-awesome-site/) | **10** | 0 | 0 | 0 |
-| [Search results](https://wave.webaim.org/report#/https://axanderz.github.io/my-awesome-site/search.html?q=golden+state+warirors) | **10** | 0 | 0 | 0 |
+| [Golden State Warriors](https://wave.webaim.org/report#/https://axanderz.github.io/MX-UX-Project-1/wiki/Golden_State_Warriors.html) | **10** | 0 | 0 | 2 |
+| [Stephen Curry](https://wave.webaim.org/report#/https://axanderz.github.io/MX-UX-Project-1/wiki/Stephen_Curry.html) | **10** | 0 | 0 | 3 |
+| [Homepage](https://wave.webaim.org/report#/https://axanderz.github.io/MX-UX-Project-1/) | **10** | 0 | 0 | 0 |
+| [Search results](https://wave.webaim.org/report#/https://axanderz.github.io/MX-UX-Project-1/search.html?q=golden+state+warirors) | **10** | 0 | 0 | 0 |
 
 **Automated check** (`tools/check_pages.py`, axe-core 4.10 plus WAVE-style rules, light and dark themes): **0 errors, 0 contrast errors, 0 axe violations on every page.** The only alerts left are WAVE's "Link to PDF document" on citations whose original sources are PDFs: 2 on the Warriors page and 3 on the Curry page. Those source links are kept on purpose.
 

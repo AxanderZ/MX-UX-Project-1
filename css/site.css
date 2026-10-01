@@ -41,6 +41,9 @@
   --page: 1180px;           /* comfortable page width */
   --narrow: 820px;          /* search and error pages */
   --brand-mark-ink: #ffffff;
+  --help-line: #8a6500;
+  --help-hover: #ffc62e;
+  --quiet-line: #8c97a8;
   color-scheme: light;
 }
 /* Display menu. Text size scales the root, so every rem-based size (headings, tables,
@@ -64,6 +67,7 @@ html { font-size: 100%; }
     --badge-b-bg: #4a1f24; --badge-b-ink: #ffd6d6;
     --shadow-sm: none; --shadow: 0 1px 0 rgba(255,255,255,.03), 0 8px 24px rgba(0,0,0,.35);
     --brand-mark-ink: #0d1117;
+    --help-line: #ffd666; --quiet-line: #7d889b;
     color-scheme: dark;
   }
 }
@@ -80,6 +84,7 @@ html { font-size: 100%; }
   --badge-b-bg: #4a1f24; --badge-b-ink: #ffd6d6;
   --shadow-sm: none; --shadow: 0 1px 0 rgba(255,255,255,.03), 0 8px 24px rgba(0,0,0,.35);
   --brand-mark-ink: #0d1117;
+  --help-line: #ffd666; --quiet-line: #7d889b;
   color-scheme: dark;
 }
 
@@ -135,6 +140,16 @@ mark { background: var(--mark); color: var(--text); border-radius: 3px; padding:
 .site-nav a[aria-current="page"] { background: var(--surface-2); color: var(--text); }
 .site-header .site-nav { margin-left: auto; }
 
+/* Help: a labelled, solid gold button on every page (never folded into a menu, even on phones),
+   so it stands apart from the plain-text nav links around it. Ink on gold is 9.6:1. */
+.help-btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 40px; padding: .45rem .95rem; flex: none;
+  border-radius: 999px; border: 2px solid var(--help-line); background: var(--gold); color: var(--gold-ink);
+  font-weight: 700; font-size: .9375rem; text-decoration: none; }
+.help-btn:visited { color: var(--gold-ink); }
+.help-btn:hover { background: var(--help-hover); }
+.help-btn[aria-current="page"] { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--help-line); }
+.site-header .site-nav + .help-btn { margin-left: -.5rem; }
+
 .display { position: relative; }
 .display__toggle { display: inline-flex; align-items: center; gap: .4rem; min-height: 40px; padding: .45rem .85rem;
   border-radius: 999px; border: 1px solid var(--border); background: var(--bg); font-weight: 500; font-size: .9375rem; }
@@ -153,7 +168,8 @@ mark { background: var(--mark); color: var(--text); border-radius: 3px; padding:
   .site-header .search { order: 5; flex-basis: 100%; max-width: none; }
   .brand__tag { display: none; }
   .site-header .site-nav { display: none; }
-  .display { margin-left: auto; }
+  .site-header__inner { gap: .75rem; }
+  .help-btn { margin-left: auto !important; padding: .4rem .8rem; }
   .display__toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 }
 
@@ -212,6 +228,13 @@ mark { background: var(--mark); color: var(--text); border-radius: 3px; padding:
 .page-actions a { display: inline-flex; align-items: center; min-height: 40px; padding: .4rem .95rem; border-radius: 999px;
   border: 1px solid var(--hero-muted); text-decoration: none; font-weight: 500; font-size: .9375rem; }
 .page-actions a:hover { background: var(--hero-2); }
+.reading-tools { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem; margin: 0 0 1rem; }
+.focus-toggle { display: inline-flex; align-items: center; gap: .45rem; min-height: 40px; padding: .4rem 1rem; border-radius: 999px;
+  border: 2px solid var(--gold); background: transparent; color: var(--hero-ink); font-weight: 600; font-size: .9375rem; }
+.focus-toggle:hover { background: var(--hero-2); }
+.focus-toggle[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); }
+.focus-toggle[aria-pressed="true"]::after { content: "On"; font-size: .75rem; font-weight: 700; padding: .1rem .45rem; border-radius: 999px; background: var(--gold-ink); color: var(--gold); }
+.reading-tools__help { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; font-size: .9375rem; }
 .protect-note { display: flex; gap: .55rem; align-items: flex-start; margin: 0; font-size: .9375rem; color: var(--hero-muted); max-width: 46rem; }
 .protect-note .icon { margin-top: .2em; width: 1rem; height: 1rem; }
 
@@ -534,3 +557,50 @@ sup.cite--note a { font-style: italic; border: 1px dashed var(--border-strong); 
   .article-hero * { color: #000 !important; }
   details.sub > .sub__body { display: block !important; }
 }
+
+/* ---------- Links and citations: Quiet (default) and Hidden ----------
+   Wikipedia colors every one of thousands of in-text links bright blue, so they compete with the
+   sentence itself. "Quiet" keeps links recognizable by a thin gray underline but sets them in the
+   text color; "Hidden" removes the underline and the citation numbers for distraction-free reading.
+   Navigation links (History in brief, "Main article", buttons, Sources) are never quietened. */
+:root:not([data-links="show"]) .article :is(.section--lead, .sub:not(.sub--plain) > .sub__body, .glance) a:not(.btn, .era__link, .hatnote a, sup a),
+:root:not([data-links="show"]) .article :is(.section--lead, .sub:not(.sub--plain) > .sub__body, .glance) a:not(.btn, .era__link, .hatnote a, sup a):visited {
+  color: inherit; text-decoration-color: var(--quiet-line); }
+:root:not([data-links="show"]) .article :is(.section--lead, .sub:not(.sub--plain) > .sub__body, .glance) a:not(.btn, .era__link, .hatnote a, sup a):hover {
+  color: var(--link); text-decoration-color: currentColor; }
+:root:not([data-links="show"]) sup.cite a { background: transparent; color: var(--muted); font-weight: 500; font-size: .6875rem; min-width: 22px; height: 24px; }
+:root:not([data-links="show"]) sup.cite a:hover { background: var(--accent); color: var(--accent-ink); }
+:root[data-links="hide"] .article :is(.section--lead, .sub:not(.sub--plain) > .sub__body, .glance) a:not(.btn, .era__link, .hatnote a, sup a) { text-decoration-line: none; }
+:root[data-links="hide"] .article :is(.section--lead, .sub:not(.sub--plain) > .sub__body, .glance) a:not(.btn, .era__link, .hatnote a, sup a):is(:hover, :focus-visible) { text-decoration-line: underline; }
+:root[data-links="hide"] .article :is(.section--lead, .sub:not(.sub--plain) > .sub__body, .glance) sup.cite { display: none; }
+
+/* ---------- Help page ---------- */
+kbd { font: 600 .8125rem/1 var(--ui); padding: .2rem .45rem; border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 6px; background: var(--surface); color: var(--text); }
+.help-page { max-width: var(--narrow); margin: 0 auto; padding: 2.5rem 1.25rem 1rem; }
+.help-page__head h1 { font: 700 clamp(2rem, 4vw, 2.6rem)/1.1 var(--read); margin-bottom: .6rem; }
+.help-page__head .eyebrow { color: var(--muted); }
+.help-page__head .lede { color: var(--text-2); font-size: 1.0625rem; margin: 0 0 1.5rem; }
+.help-filter label { display: block; font-weight: 600; margin-bottom: .35rem; }
+.help-filter input { width: 100%; min-height: 48px; padding: .6rem 1rem; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--bg); }
+.help-filter input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+.help-filter .meta { min-height: 1.4em; margin: .4rem 0 0 .25rem; }
+.help-cards ul { list-style: none; margin: 1.25rem 0 2rem; padding: 0; display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.help-card { display: flex; align-items: center; gap: .7rem; min-height: 56px; padding: .7rem 1rem; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); color: var(--text); text-decoration: none; font-weight: 600; }
+.help-card:visited { color: var(--text); }
+.help-card:hover { border-color: var(--accent); background: var(--bg); }
+.help-card .icon { width: 1.4rem; height: 1.4rem; color: var(--accent); }
+.help-topic { padding: 1.6rem 0; border-top: 1px solid var(--border); scroll-margin-top: 5rem; }
+.help-topic h2 { display: flex; align-items: center; gap: .6rem; font: 700 1.45rem/1.25 var(--read); }
+.help-topic h2 .icon { width: 1.5rem; height: 1.5rem; color: var(--accent); }
+.help-topic p, .help-topic li, .help-topic dd { color: var(--text-2); }
+.help-topic li { margin-bottom: .5rem; }
+.help-topic__top { font-size: .875rem; margin: .5rem 0 0; }
+.help-terms { margin: 0; display: grid; gap: .75rem; }
+.help-terms > div { padding: .75rem 1rem; background: var(--surface); border-radius: var(--radius-sm); }
+.help-terms dt { font-weight: 700; color: var(--text); }
+.help-terms dd { margin: .15rem 0 0; }
+.help-topic--more { background: var(--note-bg); border: 1px solid var(--note-line); border-radius: var(--radius); padding: 1.3rem 1.4rem; margin-top: 1rem; }
+.help-topic--more h2, .help-topic--more p { color: var(--note-ink); }
+.help-topic--more a, .help-topic--more a:visited { color: var(--note-ink); font-weight: 600; }
+.help-empty { padding: 1rem 0; color: var(--text-2); }
